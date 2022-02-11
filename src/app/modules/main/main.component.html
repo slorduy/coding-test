@@ -1,0 +1,88 @@
+<app-navbar-component></app-navbar-component>
+<div class="container">
+   
+
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <div style="width: 500px;" class="card mt-4 mb-2">
+
+                <div class="card-body">
+                    <div class="row">
+                        <div  class="col-8">
+                            <input [(ngModel)]="newTask" class="form-control" type="text">
+                        </div>
+                        <div class="col-4 ">
+                            <button (click)="addTask()" [disabled]="!newTask" class="btn btn-success">agregar</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="row">
+     
+        <div class="col d-flex justify-content-center">
+            <div style="width: 500px;" class="card">
+                <div class="card-body">
+                    <div  *ngIf="!loaded" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    <table *ngIf="loaded" class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Completado</th>
+                            <th scope="col">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of tasksList">
+                            <th scope="row">  <input (click)="addChecked($event)" class="form-check-input" type="checkbox" value={{item.id}}></th>
+                            <td>{{item.title}}</td>
+                            <td>{{item.completed ? 'Completado' : 'No completado'}}</td>
+                            <td><button (click)="editTask(item)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button></td>
+                          </tr>
+                        </tbody>
+                    </table>
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <button *ngIf="loaded" [disabled]="checkedTasks.length == 0" (click)="deleteSelectedTasks()" class="btn btn-primary" type="button">Borrar seleccionados</button>
+                      </div>                </div>
+              </div>
+        </div>
+       
+    </div>
+   
+</div>
+
+
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar Tarea</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-6">
+                    <label for="modalButton" class="form-label">Titulo</label>
+                    <input [(ngModel)]="taskInfo.title" class="form-control" type="text" id="modalButton">
+                </div>  
+                <div style="margin-top:36px;" class=" col-6">
+                    <input [(ngModel)]="taskInfo.completed" class="form-check-input mr-4" type="checkbox" id="modalCheck">
+                    <label style="margin-left:10px;" class="form-check-label" for="modalCheck">
+                       Completado
+                      </label>
+                </div>  
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button (click)="saveTask()" type="button" data-bs-dismiss="modal" class="btn btn-primary">Editar Tarea </button>
+        </div>
+      </div>
+    </div>
+  </div>
